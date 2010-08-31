@@ -59,9 +59,9 @@ IPlugBase::IPlugBase(int nParams, const char* channelIOStr, int nPresets,
     mPresets.Add(new IPreset(i));
   }
 
-  strcpy(mEffectName, effectName);
-  strcpy(mProductName, productName);
-  strcpy(mMfrName, mfrName);
+  strncpy(mEffectName, effectName, MAX_EFFECT_NAME_LEN);
+  strncpy(mProductName, productName, MAX_EFFECT_NAME_LEN);
+  strncpy(mMfrName, mfrName, MAX_EFFECT_NAME_LEN);
 
   int nInputs = 0, nOutputs = 0;
   while (channelIOStr) {
