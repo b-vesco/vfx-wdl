@@ -33,16 +33,12 @@ void GetVersionStr(int version, char* str)
 {
   int ver, rmaj, rmin;
   GetVersionParts(version, &ver, &rmaj, &rmin);
-  //if (rmin) {
-  //  sprintf(str, "v%d.%d.%d", ver, rmaj, rmin);
-  //}
-  //else
-  //if (rmaj) {
-    sprintf(str, "v%d.%02d", ver, rmaj);
-  //}
-  //else {
-  //  sprintf(str, "v%d", ver);
-  //}
+  if (rmin) {
+    sprintf(str, "v%d.%d.%d", ver, rmaj, rmin);
+  }
+  else {
+    sprintf(str, "v%d.%d", ver, rmaj);
+  }
 }
 
 IPlugBase::IPlugBase(int nParams, const char* channelIOStr, int nPresets,
