@@ -34,10 +34,10 @@ void GetVersionStr(int version, char* str)
   int ver, rmaj, rmin;
   GetVersionParts(version, &ver, &rmaj, &rmin);
   if (rmin) {
-    sprintf(str, "v%d.%d.%d", ver, rmaj, rmin);
+    sprintf(str, "v%d.%d.%02d", ver, rmaj, rmin);
   }
   else {
-    sprintf(str, "v%d.%d", ver, rmaj);
+    sprintf(str, "v%d.%02d", ver, rmaj);
   }
 }
 
