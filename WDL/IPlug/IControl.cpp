@@ -372,6 +372,20 @@ bool ICaptionControl::Draw(IGraphics* pGraphics)
     return ITextControl::Draw(pGraphics);
 }
 
+void ICaptionControl::OnMouseDown(int x, int y, IMouseMod* pMod)
+{
+    if ((pMod->L) || (pMod->R))
+    {
+        PromptUserInput();
+        return;
+    }
+}
+
+void ICaptionControl::OnMouseDblClick(int x, int y, IMouseMod* pMod)
+{
+    PromptUserInput();
+}
+
 IURLControl::IURLControl(IPlugBase* pPlug, IRECT* pR, const char* url, const char* backupURL, const char* errMsgOnFailure)
 : IControl(pPlug, pR)
 {
