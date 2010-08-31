@@ -680,30 +680,22 @@ bool IGraphicsWin::OpenURL(const char* url,
 
 bool IGraphicsWin::DrawIText(IText* pText, char* str, IRECT* pR)
 {
-  if (!str || str == '\0') {
-      return true;
-  }
+	if (!str || str == '\0') {
+		return true;
+	}
 
 	HDC pDC = mDrawBitmap->getDC();
-	
-  bool setColor = (pText->mColor != mActiveFontColor);
-	if (!mFontActive) {
-		int h = pText->mSize;
-		int esc = 10 * pText->mOrientation;
-		int wt = (pText->mStyle == IText::kStyleBold ? FW_BOLD : 0);
-		int it = (pText->mStyle == IText::kStyleItalic ? 1 : 0);
-		HFONT font = CreateFont(h, 0, esc, esc, wt, it, 0, 0, 0, 0, 0, 0, 0, pText->mFont);
-		SelectObject(pDC, font);  // leak?
-		SetBkMode(pDC, TRANSPARENT);
-		mFontActive = true;
-    setColor = true;
-	}
-	
+
+	bool setColor = (pText->mColor != mActiveFontColor);
+	HFONT font = pText->mHfont;
+	SelectObject(pDC, font);
+	SetBkMode(pDC, TRANSPARENT);
+
 	if (setColor) {
 		SetTextColor(pDC, RGB(pText->mColor.R, pText->mColor.G, pText->mColor.B));
 		mActiveFontColor = pText->mColor;
 	}
-    
+
 	UINT fmt = DT_NOCLIP;
 	switch(pText->mAlign) {
 		case IText::kAlignCenter:	fmt |= DT_CENTER; break;
@@ -715,4 +707,3 @@ bool IGraphicsWin::DrawIText(IText* pText, char* str, IRECT* pR)
 	RECT R = { pR->L, pR->T, pR->R, pR->B };
 	return !!DrawText(pDC, str, strlen(str), &R, fmt);
 }
-

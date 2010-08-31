@@ -55,7 +55,11 @@ const int FONT_LEN = 32;
 
 struct IText 
 {
+public:
 	char mFont[FONT_LEN];
+#ifdef WIN32
+    HFONT mHfont; // vfxmod: added HFONT
+#endif
 	int mSize;
 	IColor mColor;
 	enum EStyle { kStyleNormal, kStyleBold, kStyleItalic } mStyle;
@@ -66,20 +70,79 @@ struct IText
 		EStyle style = kStyleNormal, EAlign align = kAlignCenter, int orientation = 0)
     :	mSize(size), mColor(pColor ? *pColor : DEFAULT_TEXT_COLOR), //mFont(font ? font : DEFAULT_FONT),
         mStyle(style), mAlign(align), mOrientation(orientation) 
+#ifdef WIN32
+		, mHfont(0)
+#endif
     {
         strcpy(mFont, (font ? font : DEFAULT_FONT));     
+#ifdef WIN32
+        createFont();
+#endif
     }
 
     IText(const IColor* pColor) 
 	:	mSize(DEFAULT_TEXT_SIZE), mColor(*pColor), //mFont(DEFAULT_FONT), 
         mStyle(kStyleNormal), mAlign(kAlignCenter), mOrientation(0)
+#ifdef WIN32
+		, mHfont(0)
+#endif
     {
         strcpy(mFont, DEFAULT_FONT);     
+#ifdef WIN32
+        createFont();
+#endif
     }
 
  //   bool operator==(const IText& rhs) const;
  //   bool operator!=(const IText& rhs) const { return !operator==(rhs); }
  //	bool operator<(const IText& rhs) const;	// For sorting.
+    ~IText()
+    {
+#ifdef WIN32
+        DeleteObject(mHfont);
+#endif
+	}
+    IText(const IText & source)
+    {
+        copyMembers(source);
+    }
+    IText& IText::operator=(const IText & source)
+    {
+        if (this != & source)
+        {
+            copyMembers(source);
+        }
+        return * this;
+    }
+#ifdef WIN32
+    void createFont()
+    {
+        if (mHfont)
+        {
+            DeleteObject(mHfont);
+            mHfont = 0;
+        }
+        int h = mSize;
+        int esc = 10 * mOrientation;
+        int wt = (mStyle == IText::kStyleBold ? FW_BOLD : 0);
+        int it = (mStyle == IText::kStyleItalic ? 1 : 0);
+        mHfont = CreateFont(h, 0, esc, esc, wt, it, 0, 0, 0, 0, 0, 0, 0, mFont);
+    }
+#endif
+
+private:
+    void copyMembers(const IText & source)
+    {
+        strncpy(mFont, source.mFont, FONT_LEN);
+        mSize = source.mSize;
+        mColor = source.mColor;
+        mStyle = source.mStyle;
+        mAlign = source.mAlign;
+        mOrientation = source.mOrientation;
+#ifdef WIN32
+		createFont();
+#endif
+    }
 };
 
 struct IRECT 
