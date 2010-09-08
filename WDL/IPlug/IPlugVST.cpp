@@ -41,8 +41,8 @@ IPlugVST::IPlugVST(IPlugInstanceInfo instanceInfo, int nParams, const char* chan
 	mAEffect.numOutputs = nOutputs;
 	mAEffect.uniqueID = uniqueID;
 	mAEffect.version = GetEffectVersion(true);
-	mAEffect.__ioRatioDeprecated = 1.0f;
-	mAEffect.__processDeprecated = VSTProcess;
+	//vfx: deprecated - mAEffect.__ioRatioDeprecated = 1.0f;
+	//vfx: deprecated - mAEffect.__processDeprecated = VSTProcess;
 	mAEffect.processReplacing = VSTProcessReplacing;
 	mAEffect.processDoubleReplacing = VSTProcessDoubleReplacing;
 	mAEffect.initialDelay = latency;
@@ -275,7 +275,7 @@ VstIntPtr VSTCALLBACK IPlugVST::VSTDispatcher(AEffect *pEffect, VstInt32 opCode,
   // Handle a couple of opcodes here to make debugging easier.
   switch (opCode) {
     case effEditIdle:
-    case __effIdleDeprecated:
+    // vfx: case __effIdleDeprecated:
       #ifdef USE_IDLE_CALLS
         _this->OnIdle();
       #endif
@@ -373,9 +373,11 @@ VstIntPtr VSTCALLBACK IPlugVST::VSTDispatcher(AEffect *pEffect, VstInt32 opCode,
 	    }
 	    return 0;
     }
+    /* vfx: deprecated
     case __effIdentifyDeprecated: {
       return 'NvEf';  // Random deprecated magic.
     }
+    */
     case effGetChunk: {
 	    BYTE** ppData = (BYTE**) ptr;
       if (ppData) {
@@ -624,7 +626,7 @@ template <class SAMPLETYPE>
 void IPlugVST::VSTPrepProcess(SAMPLETYPE** inputs, SAMPLETYPE** outputs, VstInt32 nFrames)
 {
   if (mDoesMidi) {
-    mHostCallback(&mAEffect, __audioMasterWantMidiDeprecated, 0, 0, 0, 0.0f);
+    // vfx: deprecated - mHostCallback(&mAEffect, __audioMasterWantMidiDeprecated, 0, 0, 0, 0.0f);
   }
   AttachInputBuffers(0, NInChannels(), inputs, nFrames);
   AttachOutputBuffers(0, NOutChannels(), outputs);
