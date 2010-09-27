@@ -63,7 +63,7 @@
 			<Tool
 				Name="VCLibrarianTool"
 				AdditionalDependencies="wininet.lib"
-				OutputFile="$(OutDir)/IPlug.lib"
+				OutputFile="$(OutDir)\IPlug.lib"
 				IgnoreDefaultLibraryNames=""
 			/>
 			<Tool
@@ -201,7 +201,7 @@
 			<Tool
 				Name="VCLibrarianTool"
 				AdditionalDependencies="wininet.lib"
-				OutputFile="$(OutDir)/IPlug.lib"
+				OutputFile="$(OutDir)\IPlug.lib"
 			/>
 			<Tool
 				Name="VCALinkTool"
