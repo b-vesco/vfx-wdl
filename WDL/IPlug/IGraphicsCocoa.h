@@ -21,6 +21,10 @@ inline CGRect ToCGRect(int h, IRECT* pR)
 {
   IGraphicsMac* mGraphics;
   NSTimer* mTimer;
+  NSTextField* mParamEditView;
+  // Ed = being edited manually.
+  IControl* mEdControl;
+  IParam* mEdParam;
 }
 - (id) init;
 - (id) initWithIGraphics: (IGraphicsMac*) pGraphics;
@@ -34,7 +38,12 @@ inline CGRect ToCGRect(int h, IRECT* pR)
 - (void) mouseDown: (NSEvent*) pEvent;
 - (void) mouseUp: (NSEvent*) pEvent;
 - (void) mouseDragged: (NSEvent*) pEvent;
+- (void) rightMouseDown: (NSEvent*) pEvent;
+- (void) rightMouseUp: (NSEvent*) pEvent;
+- (void) rightMouseDragged: (NSEvent*) pEvent;
 - (void) mouseMoved: (NSEvent*) pEvent;
 - (void) scrollWheel: (NSEvent*) pEvent;
 - (void) killTimer;
+- (void) controlTextDidChange: (NSNotification *) aNotification;
+- (void) promptUserInput: (IControl*) pControl param: (IParam*) pParam;
 @end
